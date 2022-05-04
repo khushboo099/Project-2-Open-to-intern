@@ -5,31 +5,31 @@ const college = async function (req, res) {
   try {
     let body = req.body;
     if (!body.name) {
-      return res.status(400).send({ status: false, msg: "Provide name" });
+      return res.status(400).send({ status: false, message: "Provide name" });
     }
 
     if (body.name.length == 0 || Object.keys(body.name).length == 0) {
-      return res.status(400).send({ status: false, msg: "Provide valid name" });
+      return res.status(400).send({ status: false, message: "Provide valid name" });
     }
 
     if (!body.fullName) {
-      return res.status(400).send({ status: false, msg: "Provide fullName" });
+      return res.status(400).send({ status: false, message: "Provide fullName" });
     }
 
     if (body.fullName.length == 0 || Object.keys(body.fullName).length == 0) {
       return res
         .status(400)
-        .send({ status: false, msg: "Provide valid fullName" });
+        .send({ status: false, message: "Provide valid fullName" });
     }
 
     if (!body.logoLink) {
-      return res.status(400).send({ status: false, msg: "Provide logoLink" });
+      return res.status(400).send({ status: false, message: "Provide logoLink" });
     }
 
     if (body.logoLink.length == 0 || Object.keys(body.logoLink).length == 0) {
       return res
         .status(400)
-        .send({ status: false, msg: "Provide valid logoLink" });
+        .send({ status: false, message: "Provide valid logoLink" });
     }
 
     if (
@@ -39,11 +39,20 @@ const college = async function (req, res) {
     ) {
       return res
         .status(401)
-        .send({ status: false, msg: "Please enter a valid logoLink" });
+        .send({ status: false, message: "Please enter a valid logoLink" });
     }
 
-    let collegeData = await CollegeModel.create(body);
-    res.status(201).send({ status: true, data: collegeData });
+    let data = await CollegeModel.find(body)
+    if (data.length!=0){
+       return res.status(400).send({status:false, message:"Data already exist."})
+    }
+
+    let collegeData = await CollegeModel.create(body) 
+    let name = collegeData.name;
+    let fullName = collegeData.fullName;
+    let logoLink = collegeData.logoLink;
+    let isDeleted = collegeData.isDeleted;
+    res.status(201).send({  name, fullName,logoLink, isDeleted});
   } catch (err) {
     res.status(500).send({ status: false, Error: err.message });
   }
@@ -80,7 +89,7 @@ const getCollegeDetails = async function (req, res) {
       interests: internData,
     };
 
-    return res.status(200).send({ status: true, data: getData });
+    return res.status(200).send({ data: getData });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
