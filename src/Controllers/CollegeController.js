@@ -8,10 +8,11 @@ const college = async function (req, res) {
       return res.status(400).send({ status: false, message: "Provide name" });
     }
 
-    if (body.name.length == 0 || Object.keys(body.name).length == 0) {
-      return res.status(400).send({ status: false, message: "Provide valid name" });
+    if (!/^([a-zA-Z]+)$/.test(body.name)) {
+      return res
+        .status(401)
+        .send({ status: false, msg: "Please enter a valid name" });
     }
-
     if (!body.fullName) {
       return res.status(400).send({ status: false, message: "Provide fullName" });
     }
@@ -22,18 +23,14 @@ const college = async function (req, res) {
         .send({ status: false, message: "Provide valid fullName" });
     }
 
+  
+
     if (!body.logoLink) {
       return res.status(400).send({ status: false, message: "Provide logoLink" });
     }
 
-    if (body.logoLink.length == 0 || Object.keys(body.logoLink).length == 0) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Provide valid logoLink" });
-    }
-
     if (
-      !/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/.test(
+      !/^(?:http(s)?)?:(\/\/)([\w\w\w\._~:\/?#[\]@!\$&'\(\)\*\+,;=.-]+)$/.test(
         body.logoLink
       )
     ) {
@@ -52,7 +49,8 @@ const college = async function (req, res) {
     let fullName = collegeData.fullName;
     let logoLink = collegeData.logoLink;
     let isDeleted = collegeData.isDeleted;
-    res.status(201).send({  name, fullName,logoLink, isDeleted});
+    let allData = {isDeleted,name,fullName,logoLink}
+    res.status(201).send({status:true,data:allData});
   } catch (err) {
     res.status(500).send({ status: false, Error: err.message });
   }
