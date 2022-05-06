@@ -16,9 +16,7 @@ const collegeSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(
-            v
-          );
+          return /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?$/.test(v);
         },
         message: "Please enter a valid logoLink",
       },

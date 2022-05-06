@@ -30,7 +30,7 @@ const college = async function (req, res) {
     }
 
     if (
-      !/^(?:http(s)?)?:(\/\/)([\w\w\w\._~:\/?#[\]@!\$&'\(\)\*\+,;=.-]+)$/.test(
+      !/^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?$/.test(
         body.logoLink
       )
     ) {

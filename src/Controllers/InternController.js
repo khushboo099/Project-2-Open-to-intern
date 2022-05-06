@@ -42,7 +42,7 @@ const intern = async function (req, res) {
       return res.status(400).send({ status: false, msg: "Provide mobile" });
     }
 
-    if (!/^([+]\d{2})?\d{10}$/.test(body.mobile)) {
+    if (!/^([+91])?\d{10}$/.test(body.mobile)) {
       return res
         .status(400)
         .send({ status: false, msg: "Please enter a valid Mobile" });
